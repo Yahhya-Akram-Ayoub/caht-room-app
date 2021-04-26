@@ -4,13 +4,13 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue').default;
+window.Vue = require("vue").default;
 
-
-import Vue from 'vue';
-import VueChatScroll from 'vue-chat-scroll';
+import axios from "axios";
+import Vue from "vue";
+import VueChatScroll from "vue-chat-scroll";
 Vue.use(VueChatScroll);
 /**
  * The following block of code may be used to automatically register your
@@ -23,8 +23,14 @@ Vue.use(VueChatScroll);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('message-component', require('./components/messages.vue').default);
+Vue.component(
+    "example-component",
+    require("./components/ExampleComponent.vue").default
+);
+Vue.component(
+    "message-component",
+    require("./components/messages.vue").default
+);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -33,27 +39,38 @@ Vue.component('message-component', require('./components/messages.vue').default)
  */
 
 const app = new Vue({
-
-
-    data:{
-        chat:[
-
-              {
-                text:"message 1 ",
-                sender:"sender1 "
-              },{
-                text:"message 2 ",
-                sender:"sender2 "
-              },{
-                text:"message 3 ",
-                sender:"sender1 "
-              },{
-                text:"message 4 ",
-                sender:"sender2 "
-              },
-
-             ]
-
-},
-
-}).$mount('#app');
+    data: {
+        chat: [
+            {
+                text: "message 1 ",
+                sender: "sender1 "
+            },
+            {
+                text: "message 2 ",
+                sender: "sender2 "
+            },
+            {
+                text: "message 3 ",
+                sender: "sender1 "
+            },
+            {
+                text: "message 4 ",
+                sender: "sender2 "
+            }
+        ]
+    },
+    methods: {
+        submit: () => {
+            axios
+            .post("language", {
+                language: document.getElementById("list").value,
+            })
+            .then(res => {
+                window.location.reload();
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        }
+    }
+}).$mount("#app");

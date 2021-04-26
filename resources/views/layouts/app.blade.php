@@ -39,13 +39,21 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
+
+                    <!-- language -->
+                    <select class="selectpicker" data-width="fit" @change="submit()" id="list">
+                        <option value="en" {{Session::has('locale') && Session::get('locale') == 'en' ? 'selected' : ''}} >{{__('words.English')}}</option>
+                        <option value="ar" {{Session::has('locale') && Session::get('locale') == 'ar'  ? 'selected' : ''}}>{{__('words.Arabic')}}</option>
+                    </select>
+                    <!-- End language -->
+
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
-                            
+
                             @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
