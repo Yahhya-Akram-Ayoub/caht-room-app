@@ -8,6 +8,10 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
+
+import Vue from 'vue';
+import VueChatScroll from 'vue-chat-scroll';
+Vue.use(VueChatScroll);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -20,6 +24,7 @@ window.Vue = require('vue').default;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('message-component', require('./components/messages.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -28,5 +33,27 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 const app = new Vue({
-    el: '#app',
-});
+
+
+    data:{
+        chat:[
+
+              {
+                text:"message 1 ",
+                sender:"sender1 "
+              },{
+                text:"message 2 ",
+                sender:"sender2 "
+              },{
+                text:"message 3 ",
+                sender:"sender1 "
+              },{
+                text:"message 4 ",
+                sender:"sender2 "
+              },
+
+             ]
+
+},
+
+}).$mount('#app');

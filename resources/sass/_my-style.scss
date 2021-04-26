@@ -1,0 +1,53 @@
+
+
+
+
+
+
+body {
+    height: 400px;
+    background: radial-gradient( #33ccff 0%, #ff99cc 100%);
+    overflow: hidden;
+}
+
+.senderName{
+    right: 3px;
+    position: absolute;
+    bottom: 3px;
+}
+
+
+.chatroom {
+    height: 500px;
+    border: 1px solid rgb(255, 255, 255);
+    padding: 10px 20px 5px 10px;
+    overflow-y: auto;
+  }
+
+mark{
+
+background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
+}
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background:  rgb(8, 204, 204);
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background:#38c172;
+  }
