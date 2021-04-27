@@ -19,7 +19,6 @@
             </div>
         </div>
     </div>--}}
-    <message-component
-     :chat ="chat" ></message-component>
+    <message-component></message-component>
 </div>
 @endsection
