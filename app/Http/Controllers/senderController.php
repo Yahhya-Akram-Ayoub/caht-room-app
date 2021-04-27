@@ -22,7 +22,7 @@ class senderController extends Controller
         $message->user_id =  Auth::user()->id;
         $message->save();
 
-        event(new sender($message ));
+        event(new sender($message , Auth::user()));
 
         return response()->json([
             'status' => 'success',

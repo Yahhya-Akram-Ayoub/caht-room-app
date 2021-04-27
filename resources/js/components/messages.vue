@@ -3,12 +3,14 @@
     <div class="card">
       <div class="card-header">
         chat room <mark>Frinds</mark>
-        <button
-          class="btn btn-danger btn-sm float-right"
-          @click.prevent="deletALl"
-        >
-          delet ALl
-        </button>
+          <example-component></example-component>
+
+          <button
+            class="btn btn-danger btn-sm float-md-right"
+            @click.prevent="deletALl"
+          >
+            delet ALl
+          </button>
       </div>
       <ul class="list-group list-group-flush chatroom" v-chat-scroll>
         <li
@@ -61,7 +63,9 @@
 
 
 <script>
+import ExampleComponent from "./ExampleComponent.vue";
 export default {
+  components: { ExampleComponent },
   name: "message",
   //   props: ["chat"],
   data: () => {
@@ -76,13 +80,12 @@ export default {
       axios
         .post("sendMessage", { text: this.textmessage })
         .then((res) => {
-       console.log("res :>> ", res);
+          console.log("res :>> ", res);
         })
         .catch((err) => {
           console.log("err :>>; ", err);
         });
 
-      this.chat.push({ text: this.textmessage, sender: { name: "you" } });
       this.textmessage = "";
       this.$refs.input.focus();
     },
@@ -93,44 +96,27 @@ export default {
       axios
         .get("/getMessage")
         .then((res) => {
-         //console.log("res :>> ", res);
+          //console.log("res :>> ", res);
           this.chat = res.data;
         })
         .catch((err) => {
           console.log("err :>>; ", err);
         });
-
-     this.listen();
+      this.listen();
     },
     deletALl() {
       axios
         .post("deletAllMessage")
         .then((res) => {
-      //    console.log("res :>> ", res);
           this.chat = [];
         })
         .catch((err) => {
           console.log("err :>>; ", err);
         });
     },
-    listen : ()=> {
-      Echo.private(`sender`).listen("sender", (e) => {
-        console.log("enent " , e);
-      });
-
-
-        Echo.join(`sender`)
-      .here((users) => {
-          console.log(users);
-      })
-      .joining((user) => {
-          console.log(user);
-      })
-      .leaving((user) => {
-          console.log(user);
-      })
-      .error((error) => {
-          console.error(error);
+    listen() {
+      Echo.private(`sender`).listen(".sender", (e) => {
+        this.chat.push({ text: e.message.text, sender: { name: e.user.name } });
       });
     },
   },
