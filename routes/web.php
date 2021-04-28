@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('auth')->get('/', function () {
+    return view('home');
 });
 
 Auth::routes();

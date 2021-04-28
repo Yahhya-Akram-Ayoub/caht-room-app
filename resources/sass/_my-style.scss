@@ -1,16 +1,10 @@
-
-
-
-
-
-
 body {
     height: 400px;
-    background: radial-gradient( #33ccff 0%, #ff99cc 100%);
+    background: radial-gradient(#33ccff 0%, #ff99cc 100%);
     overflow: hidden;
 }
 
-.senderName{
+.senderName {
     right: 3px;
     position: absolute;
     bottom: 3px;
@@ -22,32 +16,40 @@ body {
     border: 1px solid rgb(255, 255, 255);
     padding: 10px 20px 5px 10px;
     overflow-y: auto;
-  }
+}
 
-mark{
-
-background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
+mark {
+    background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
 }
 
 
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
 
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
 
-  }
+}
 
-  /* Track */
-  ::-webkit-scrollbar-track {
+/* Track */
+::-webkit-scrollbar-track {
     background: #f1f1f1;
-  }
+}
 
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background:  rgb(8, 204, 204);
-  }
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(8, 204, 204);
+}
 
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background:#38c172;
-  }
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #38c172;
+}

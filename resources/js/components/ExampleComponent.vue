@@ -1,14 +1,14 @@
 <template>
-  <div class="btn-group">
+  <div class="btn-group ml-auto ">
     <button
       type="button"
-      class="btn btn-success btn-sm mx-md-2 float-sm-right float-md-left dropdown-toggle"
+      class="btn btn-success btn-sm btn-circle  dropdown-toggle"
       data-toggle="dropdown"
       aria-haspopup="true"
       aria-expanded="false"
     >
-      online users
-      <svg
+      {{onlineUsers.length}}
+      <!-- <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
         height="16"
@@ -21,7 +21,7 @@
         class="feather feather-check"
       >
         <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
+      </svg> -->
     </button>
     <div class="dropdown-menu dropdown-menu-right">
       <button

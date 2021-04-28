@@ -3,6 +3,6 @@
 @section('content')
 <div class="container">
 
-    <message-component></message-component>
+    <message-component :user="{{Auth::user()}}"></message-component>
 </div>
 @endsection

@@ -2,15 +2,19 @@
   <div class="container">
     <div class="card">
       <div class="card-header">
+          <div class=" d-flex">
         chat room <mark>Frinds</mark>
-          <example-component></example-component>
 
-          <button
-            class="btn btn-danger btn-sm float-md-right"
-            @click.prevent="deletALl"
-          >
-            delet ALl
-          </button>
+
+        <example-component></example-component>
+        </div>
+<button
+          class="btn btn-danger btn-sm float-xs-left"
+          @click.prevent="deletALl"
+        >
+          delet ALl
+        </button>
+
       </div>
       <ul class="list-group list-group-flush chatroom" v-chat-scroll>
         <li
@@ -25,7 +29,14 @@
           >
         </li>
       </ul>
+          <span
+    class="alert alert-primary m-0 p-0"
+    v-for="(message, index) in typingUser"
+     :key="index * -1">
+      {{ message }} is typing. . .
+    </span>
     </div>
+
     <div class="input-group">
       <input
         v-model="textmessage"
@@ -67,13 +78,22 @@ import ExampleComponent from "./ExampleComponent.vue";
 export default {
   components: { ExampleComponent },
   name: "message",
-  //   props: ["chat"],
+  props: ["user"],
   data: () => {
     return {
       textmessage: "",
       sender: "sender defualt",
+      typingUser: [],
       chat: [],
     };
+  },
+  watch: {
+    textmessage() {
+      Echo.private(`sender`).whisper("typing", {
+        name: this.user.name,
+        message: !this.textmessage,
+      });
+    },
   },
   methods: {
     send: function () {
@@ -113,15 +133,34 @@ export default {
         .catch((err) => {
           console.log("err :>>; ", err);
         });
+
+      Echo.private(`sender`).whisper("deletALlMessage", {
+        name: this.user.name,
+      });
     },
     listen() {
-      Echo.private(`sender`).listen(".sender", (e) => {
-        this.chat.push({ text: e.message.text, sender: { name: e.user.name } });
-      });
+      Echo.private(`sender`)
+        .listen(".sender", (e) => {
+          this.chat.push({
+            text: e.message.text,
+            sender: { name: e.user.name },
+          });
+        })
+        .listenForWhisper("typing", (e) => {
+          if (e.message) {
+               this.typingUser.splice(this.typingUser.indexOf(e.user), 1);
+          } else if (!this.typingUser.includes(e.name)) {
+            this.typingUser.push(e.name);
+          }
+        })
+        .listenForWhisper("deletALlMessage", (e) => {
+          this.chat = [];
+        });
     },
   },
   mounted() {
     this.getChat();
+    console.log(this.user);
   },
 };
 </script>

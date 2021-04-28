@@ -16,10 +16,9 @@ import VueChatScroll from "vue-chat-scroll";
 Vue.use(VueChatScroll);
 
 // for notifications
-import Toaster from 'v-toaster';
-import 'v-toaster/dist/v-toaster.css';
-Vue.use(Toaster, {timeout: 5000});
-
+import Toaster from "v-toaster";
+import "v-toaster/dist/v-toaster.css";
+Vue.use(Toaster, { timeout: 5000 });
 
 Vue.component(
     "example-component",
@@ -30,40 +29,22 @@ Vue.component(
     require("./components/messages.vue").default
 );
 
-
 const app = new Vue({
     data: {
-        chat: [
-            {
-                text: "message 1 ",
-                sender: "sender1 "
-            },
-            {
-                text: "message 2 ",
-                sender: "sender2 "
-            },
-            {
-                text: "message 3 ",
-                sender: "sender1 "
-            },
-            {
-                text: "message 4 ",
-                sender: "sender2 "
-            }
-        ]
+
     },
     methods: {
         submit: () => {
             axios
-            .post("language", {
-                language: document.getElementById("list").value,
-            })
-            .then(res => {
-                window.location.reload();
-            })
-            .catch(err => {
-                console.log(err);
-            });
+                .post("language", {
+                    language: document.getElementById("list").value
+                })
+                .then(res => {
+                    window.location.reload();
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     }
 }).$mount("#app");

@@ -1993,19 +1993,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     ExampleComponent: _ExampleComponent_vue__WEBPACK_IMPORTED_MODULE_0__.default
   },
   name: "message",
-  //   props: ["chat"],
+  props: ["user"],
   data: function data() {
     return {
       textmessage: "",
       sender: "sender defualt",
+      typingUser: [],
       chat: []
     };
+  },
+  watch: {
+    textmessage: function textmessage() {
+      Echo["private"]("sender").whisper("typing", {
+        name: this.user.name,
+        message: !this.textmessage
+      });
+    }
   },
   methods: {
     send: function send() {
@@ -2041,6 +2061,9 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.log("err :>>; ", err);
       });
+      Echo["private"]("sender").whisper("deletALlMessage", {
+        name: this.user.name
+      });
     },
     listen: function listen() {
       var _this3 = this;
@@ -2052,11 +2075,20 @@ __webpack_require__.r(__webpack_exports__);
             name: e.user.name
           }
         });
+      }).listenForWhisper("typing", function (e) {
+        if (e.message) {
+          _this3.typingUser.splice(_this3.typingUser.indexOf(e.user), 1);
+        } else if (!_this3.typingUser.includes(e.name)) {
+          _this3.typingUser.push(e.name);
+        }
+      }).listenForWhisper("deletALlMessage", function (e) {
+        _this3.chat = [];
       });
     }
   },
   mounted: function mounted() {
     this.getChat();
+    console.log(this.user);
   }
 });
 
@@ -2101,21 +2133,7 @@ vue__WEBPACK_IMPORTED_MODULE_2__.default.use((v_toaster__WEBPACK_IMPORTED_MODULE
 vue__WEBPACK_IMPORTED_MODULE_2__.default.component("example-component", __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default);
 vue__WEBPACK_IMPORTED_MODULE_2__.default.component("message-component", __webpack_require__(/*! ./components/messages.vue */ "./resources/js/components/messages.vue").default);
 var app = new vue__WEBPACK_IMPORTED_MODULE_2__.default({
-  data: {
-    chat: [{
-      text: "message 1 ",
-      sender: "sender1 "
-    }, {
-      text: "message 2 ",
-      sender: "sender2 "
-    }, {
-      text: "message 3 ",
-      sender: "sender1 "
-    }, {
-      text: "message 4 ",
-      sender: "sender2 "
-    }]
-  },
+  data: {},
   methods: {
     submit: function submit() {
       axios__WEBPACK_IMPORTED_MODULE_0___default().post("language", {
@@ -44043,12 +44061,11 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "btn-group" }, [
+  return _c("div", { staticClass: "btn-group ml-auto " }, [
     _c(
       "button",
       {
-        staticClass:
-          "btn btn-success btn-sm mx-md-2 float-sm-right float-md-left dropdown-toggle",
+        staticClass: "btn btn-success btn-sm btn-circle  dropdown-toggle",
         attrs: {
           type: "button",
           "data-toggle": "dropdown",
@@ -44056,27 +44073,7 @@ var render = function() {
           "aria-expanded": "false"
         }
       },
-      [
-        _vm._v("\n    online users\n    "),
-        _c(
-          "svg",
-          {
-            staticClass: "feather feather-check",
-            attrs: {
-              xmlns: "http://www.w3.org/2000/svg",
-              width: "16",
-              height: "16",
-              viewBox: "0 0 24 24",
-              fill: "none",
-              stroke: "currentColor",
-              "stroke-width": "2",
-              "stroke-linecap": "round",
-              "stroke-linejoin": "round"
-            }
-          },
-          [_c("polyline", { attrs: { points: "20 6 9 17 4 12" } })]
-        )
-      ]
+      [_vm._v("\n    " + _vm._s(_vm.onlineUsers.length) + "\n    ")]
     ),
     _vm._v(" "),
     _c(
@@ -44121,20 +44118,27 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "card" }, [
-      _c(
-        "div",
-        { staticClass: "card-header" },
-        [
-          _vm._v("\n      chat room "),
-          _c("mark", [_vm._v("Frinds")]),
-          _vm._v(" "),
-          _c("example-component"),
+    _c(
+      "div",
+      { staticClass: "card" },
+      [
+        _c("div", { staticClass: "card-header" }, [
+          _c(
+            "div",
+            { staticClass: " d-flex" },
+            [
+              _vm._v("\n        chat room "),
+              _c("mark", [_vm._v("Frinds")]),
+              _vm._v(" "),
+              _c("example-component")
+            ],
+            1
+          ),
           _vm._v(" "),
           _c(
             "button",
             {
-              staticClass: "btn btn-danger btn-sm float-md-right",
+              staticClass: "btn btn-danger btn-sm float-xs-left",
               on: {
                 click: function($event) {
                   $event.preventDefault()
@@ -44144,29 +44148,37 @@ var render = function() {
             },
             [_vm._v("\n          delet ALl\n        ")]
           )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "ul",
-        {
-          directives: [{ name: "chat-scroll", rawName: "v-chat-scroll" }],
-          staticClass: "list-group list-group-flush chatroom"
-        },
-        _vm._l(_vm.chat, function(message, index) {
-          return _c("li", { key: index, staticClass: "list-group-item" }, [
-            _vm._v("\n        " + _vm._s(message.text) + "\n\n        "),
-            _c("small", { staticClass: "badge badge-success senderName" }, [
-              _vm._v(
-                "\n          " + _vm._s(_vm.senderName(message.sender.name))
-              )
+        ]),
+        _vm._v(" "),
+        _c(
+          "ul",
+          {
+            directives: [{ name: "chat-scroll", rawName: "v-chat-scroll" }],
+            staticClass: "list-group list-group-flush chatroom"
+          },
+          _vm._l(_vm.chat, function(message, index) {
+            return _c("li", { key: index, staticClass: "list-group-item" }, [
+              _vm._v("\n          " + _vm._s(message.text) + "\n\n          "),
+              _c("small", { staticClass: "badge badge-success senderName" }, [
+                _vm._v(
+                  "\n            " + _vm._s(_vm.senderName(message.sender.name))
+                )
+              ])
             ])
-          ])
-        }),
-        0
-      )
-    ]),
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _vm._l(_vm.typingUser, function(message, index) {
+          return _c(
+            "span",
+            { key: index * -1, staticClass: "alert alert-primary m-0 p-0" },
+            [_vm._v("\n      " + _vm._s(message) + " is typing. . .\n    ")]
+          )
+        })
+      ],
+      2
+    ),
     _vm._v(" "),
     _c("div", { staticClass: "input-group" }, [
       _c("input", {
