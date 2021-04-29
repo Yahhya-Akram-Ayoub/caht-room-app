@@ -44127,8 +44127,7 @@ var render = function() {
             "div",
             { staticClass: " d-flex" },
             [
-              _vm._v("\n        chat room "),
-              _c("mark", [_vm._v("Frinds")]),
+              _c("mark", { staticClass: "mb-1" }, [_vm._v("chat room Frinds")]),
               _vm._v(" "),
               _c("example-component")
             ],

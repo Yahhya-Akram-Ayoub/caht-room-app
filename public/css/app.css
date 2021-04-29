@@ -10022,7 +10022,9 @@ body {
 }
 
 mark {
-  background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
+  background: linear-gradient(to bottom, #00cdff 0%, #fff1cd 100%);
+  border: 0.5px solid #33ccff;
+  border-radius: 12px;
 }
 
 .btn-circle {

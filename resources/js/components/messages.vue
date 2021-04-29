@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-header">
           <div class=" d-flex">
-        chat room <mark>Frinds</mark>
+        <mark class="mb-1">chat room Frinds</mark>
 
 
         <example-component></example-component>
