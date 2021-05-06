@@ -37,8 +37,8 @@
 </template>
 
 <script>
-export default {
-  name: "ExampleComponent",
+    export default {
+  name: "OnlineUsers",
   data: () => {
     return {
       onlineUsers: [],
@@ -49,7 +49,7 @@ export default {
       Echo.join(`sender`)
         .here((users) => {
           this.onlineUsers = users;
-          console.log(this.onlineUsers);
+        //  console.log(this.onlineUsers);
         })
         .joining((user) => {
           this.onlineUsers.push(user);

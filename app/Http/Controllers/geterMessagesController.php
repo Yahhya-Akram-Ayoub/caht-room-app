@@ -9,9 +9,13 @@ use Illuminate\Http\Request;
 
 class geterMessagesController extends Controller
 {
+
+
+
+
+
     public function getMessage()
     {
-
         $response1 = MessageModel::all();
         foreach ($response1 as $mess) {
 

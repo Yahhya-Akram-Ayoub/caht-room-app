@@ -2,19 +2,17 @@
   <div class="container">
     <div class="card">
       <div class="card-header">
-          <div class=" d-flex">
-        <mark class="mb-1">chat room Frinds</mark>
+        <div class="d-flex">
+          <mark class="mb-1">chat room Frinds</mark>
 
-
-        <example-component></example-component>
+          <online-users></online-users>
         </div>
-<button
+        <button
           class="btn btn-danger btn-sm float-xs-left"
           @click.prevent="deletALl"
         >
           delet ALl
         </button>
-
       </div>
       <ul class="list-group list-group-flush chatroom" v-chat-scroll>
         <li
@@ -28,13 +26,14 @@
             {{ senderName(message.sender.name) }}</small
           >
         </li>
+        <span
+          class="alert alert-primary m-0 p-0"
+          v-for="(message, index) in typingUser"
+          :key="index * -1"
+        >
+          {{ message }} is typing. . .
+        </span>
       </ul>
-          <span
-    class="alert alert-primary m-0 p-0"
-    v-for="(message, index) in typingUser"
-     :key="index * -1">
-      {{ message }} is typing. . .
-    </span>
     </div>
 
     <div class="input-group">
@@ -74,9 +73,9 @@
 
 
 <script>
-import ExampleComponent from "./ExampleComponent.vue";
+import OnlineUsers from "./OnlineUsers.vue";
 export default {
-  components: { ExampleComponent },
+  components: { OnlineUsers },
   name: "message",
   props: ["user"],
   data: () => {
@@ -98,9 +97,9 @@ export default {
   methods: {
     send: function () {
       axios
-        .post("sendMessage", { text: this.textmessage })
+        .post("api/sendMessage", { text: this.textmessage })
         .then((res) => {
-          console.log("res :>> ", res);
+        //   console.log("res :>> ", res);
         })
         .catch((err) => {
           console.log("err :>>; ", err);
@@ -113,20 +112,22 @@ export default {
       return sender.length > 10 ? sender.substr(0, 10) + "..." : sender;
     },
     getChat() {
-      axios
-        .get("/getMessage")
-        .then((res) => {
-          //console.log("res :>> ", res);
-          this.chat = res.data;
-        })
-        .catch((err) => {
-          console.log("err :>>; ", err);
-        });
+      axios.defaults.headers.common.Authorization =
+        "Bearer " + localStorage.getItem("userToken");
+        axios
+          .get("api/getMessage")
+          .then((res) => {
+            // console.log("res :>> ", res);
+            this.chat = res.data;
+          })
+          .catch((err) => {
+            console.log("err get message :>>; ", err);
+          });
       this.listen();
     },
     deletALl() {
       axios
-        .post("deletAllMessage")
+        .post("api/deletAllMessage")
         .then((res) => {
           this.chat = [];
         })
@@ -148,7 +149,7 @@ export default {
         })
         .listenForWhisper("typing", (e) => {
           if (e.message) {
-               this.typingUser.splice(this.typingUser.indexOf(e.user), 1);
+            this.typingUser.splice(this.typingUser.indexOf(e.user), 1);
           } else if (!this.typingUser.includes(e.name)) {
             this.typingUser.push(e.name);
           }
@@ -160,7 +161,7 @@ export default {
   },
   mounted() {
     this.getChat();
-    console.log(this.user);
+    // console.log(this.user);
   },
 };
 </script>

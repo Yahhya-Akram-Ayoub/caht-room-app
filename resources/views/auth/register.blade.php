@@ -8,9 +8,10 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="api/register">
-                        @csrf
+                    <form method="POST" action="{{ route('login') }}">
 
+                        @csrf
+{{--
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
@@ -67,7 +68,8 @@
                                     {{ __('Register') }}
                                 </button>
                             </div>
-                        </div>
+                        </div> --}}
+                        <register></register>
                     </form>
                 </div>
             </div>

@@ -43,14 +43,14 @@ class PassportController extends Controller
     {
         $credentials = [
             'email' => $request->email,
-            'password' => $request->password
+            'password' => $request->password,
         ];
-
         if (Auth::attempt($credentials)) {
-            $user = Auth::user()->get ;
-            $token = $user->createToken($user->name)->accessToken;
+            $user = auth()->user();
+            $token = $user->createToken('$user->name')->accessToken;
             return response()->json(['token' => $token], 200);
         } else {
+
             return response()->json(['error' => 'UnAuthorised'], 401);
         }
     }
